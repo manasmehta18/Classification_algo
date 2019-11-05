@@ -67,11 +67,11 @@ y_test = test.iloc[:, -1].values
 clf_train = RandomForestClassifier(n_estimators=10, random_state=0)
 clf_train.fit(X_train, y_train)
 
-p_train = clf_train.predict(X_train)
+p_train = clf_train.predict(X_test)
 
 TP_train, TN_train, FP_train, FN_train = 0.0, 0.0, 0.0, 0.0
 
-for pin, yin in it.izip(p_train, y_train):
+for pin, yin in it.izip(p_train, y_test):
     if pin == 0 and yin == 0:
         TP_train = TP_train + 1
     elif pin == 1 and yin == 1:
@@ -87,27 +87,3 @@ rec_train = TP_train / (TP_train + FN_train)
 f_mes_train = (2 * pre_train * rec_train) / (pre_train + rec_train)
 
 print f_mes_train
-
-clf_test = RandomForestClassifier(n_estimators=10, random_state=0)
-clf_test.fit(X_test, y_test)
-
-p_test = clf_test.predict(X_test)
-
-TP_test, TN_test, FP_test, FN_test = 0.0, 0.0, 0.0, 0.0
-
-for pin, yin in it.izip(p_test, y_test):
-    if pin == 0 and yin == 0:
-        TP_test = TP_test + 1
-    elif pin == 1 and yin == 1:
-        TN_test = TN_test + 1
-    elif pin == 0 and yin == 1:
-        FP_test = FP_test + 1
-    elif pin == 1 and yin == 0:
-        FN_test = FN_test + 1
-
-pre_test = TP_test / (TP_test + FP_test)
-rec_test = TP_test / (TP_test + FN_test)
-
-f_mes_test = (2 * pre_test * rec_test) / (pre_test + rec_test)
-
-print f_mes_test
